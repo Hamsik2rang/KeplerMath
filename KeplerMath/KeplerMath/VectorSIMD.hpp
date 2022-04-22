@@ -157,6 +157,18 @@ namespace SIMD {
 			return *this;
 		}
 
+		inline void* operator new(size_t size)
+		{
+			void* p = _aligned_malloc(size, 16);
+
+			return p;
+		}
+
+		inline void operator delete(void* p)
+		{
+			_aligned_free(p);
+		}
+
 		__forceinline friend const Vector4Float operator*(const float lhs, const Vector4Float& rhs)
 		{
 			Vector4Float _result;
