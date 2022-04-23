@@ -3,17 +3,24 @@
 
 #include "VectorSIMD.hpp"
 #include "VectorTemplate.hpp"
+#include "Timer.h"
 
 int main(int argc, char** argv)
 {
-	{
-		SIMD::Vec4f a{ 1.0f, 0.0f, 1.0f, 0.0f };
-		SIMD::Vec4f b{ 1.0f, 1.0f, 1.0f, 0.0f };
-		SIMD::Vec4f c{ 1.0f, 0.0f, 1.0f, 0.0f };
-		
-		SIMD::Vec4f d{ 3.0f, 2.0f, 1.0f, 8.0f };
-		d = a;
-	}
+	//{
+	//	SIMD::Vec4f a{ 1.0f, 0.0f, 1.0f, 0.0f };
+	//	SIMD::Vec4f b{ 1.0f, 1.0f, 1.0f, 0.0f };
+	//	SIMD::Vec4f c{ 1.0f, 0.0f, 1.0f, 1.0f };
+	//	
+	//	printf("%f %f", c.SqLength(), c.Length());
+	//
+	//	Dot(a, b);
+	//}
+	
+
+	SIMD::Vec4f a{ 1.0f, 1.0f, 1.0f, 1.0f };
+	auto b = a.Normalize();
+	printf("%f %f %f %f", b.x, b.y, b.z, b.w);
 
 	//{
 	//	SIMD::Vec4i v1{ 1,3,5,7 };

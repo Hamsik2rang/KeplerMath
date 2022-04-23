@@ -5,191 +5,95 @@
 
 namespace SIMD {
 	
-	struct Vector4Float;
+	struct Vector4;
 	struct Vector4Int;
 
-	using Vec4f = Vector4Float;
+	using Vec4f = Vector4;
 	using Vec4i = Vector4Int;
 
-	struct alignas(16) Vector4Float
+	struct alignas(16) Vector4
 	{
 		union
 		{
 			struct { float x; float y; float z; float w; };
 			struct { float r; float g; float b; float a; };
 			float e[4];
-			__m128 m;
+			__m128 ps;
 		};
 
-		Vector4Float()
+		Vector4()
 			:e{ 0,0,0,0 }
 		{}
 
-		Vector4Float(float _x, float _y, float _z, float _w)
+		Vector4(float _x, float _y, float _z, float _w)
 			:x{_x}
 			,y{_y}
 			,z{_z}
 			,w{_w}
 		{}
 
-		Vector4Float(const Vector4Float& v) = default;
-		Vector4Float(Vector4Float&& v) = default;
+		Vector4(__m128 m)
+			:ps{ m }
+		{}
 
-		__forceinline Vector4Float& operator=(const Vector4Float& rhs)
+		Vector4(const Vector4& v) = default;
+		Vector4(Vector4&& v) = default;
+
+		__forceinline const float SqLength() const
 		{
-			/*__m128* lv = reinterpret_cast<__m128*>(this);
-			const __m128* rv = reinterpret_cast<const __m128*>(&rhs);
-			*lv = *rv;*/
-			this->m = rhs.m;
+			__m128 result = _mm_mul_ps(ps, ps);
+			result = _mm_hadd_ps(result, result);
+			result = _mm_hadd_ps(result, result);
 
-			return *this;
+			return result.m128_f32[0];
 		}
 
-		__forceinline const Vector4Float operator+()
+		__forceinline const float Length() const
 		{
-			return *this;
+			const float sqlen = SqLength();
+			__m128 result = _mm_sqrt_ps(_mm_set_ps1(sqlen));
+		
+			return result.m128_f32[0];
 		}
 
-		__forceinline const Vector4Float operator-()
+		__forceinline const Vector4 Normalize() const
 		{
-			Vector4Float _result;
-			const __m128 scalar = _mm_set1_ps(-1.0f);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			__m128* v = reinterpret_cast<__m128*>(this);
-			*result = _mm_mul_ps(*v, scalar);
-
-			return _result;
+			__m128 result = _mm_div_ps(ps, _mm_set_ps1(Length()));
+			
+			return result;
 		}
 
-		__forceinline float& operator[](const int index)
-		{
-			return e[index];
-		}
+		// Operator Overloadings
+		__forceinline Vector4& operator=(const Vector4& rhs) { this->ps = rhs.ps; return *this; }
+		__forceinline const Vector4 operator+() { return *this; }
+		__forceinline const Vector4 operator-() { return _mm_mul_ps(ps, _mm_set1_ps(-1.0f)); }
+		__forceinline float& operator[](const int index) { return e[index]; }
+		__forceinline const Vector4 operator+(const Vector4& rhs) const { return _mm_add_ps(ps, rhs.ps); }
+		__forceinline const Vector4 operator-(const Vector4& rhs) const { return _mm_sub_ps(ps, rhs.ps); }
+		__forceinline const Vector4 operator*(const Vector4& rhs) const { return _mm_mul_ps(ps, rhs.ps); }
+		__forceinline const Vector4 operator*(const float rhs) const { return _mm_mul_ps(ps, _mm_set_ps1(rhs)); }
+		__forceinline const Vector4 operator/(const Vector4& rhs) const { return _mm_div_ps(ps, rhs.ps); }
+		__forceinline const Vector4 operator/(const float rhs) const { return _mm_div_ps(ps, _mm_set_ps1(rhs)); }
 
-		__forceinline const float operator[](const int index) const
-		{
-			return e[index];
-		}
+		__forceinline Vector4& operator+=(const Vector4& rhs) { ps = _mm_add_ps(ps, rhs.ps); return *this; }
+		__forceinline Vector4& operator-=(const Vector4& rhs) { ps = _mm_sub_ps(ps, rhs.ps); return *this; }
+		
+		inline void* operator new(size_t size) { void* p = _aligned_malloc(size, 16); return p; }
+		inline void operator delete(void* p) { _aligned_free(p); }
 
-		__forceinline const Vector4Float operator+(const Vector4Float& rhs) const
-		{
-			Vector4Float _result;
-			const __m128* lv = reinterpret_cast<const __m128*>(this);
-			const __m128* rv = reinterpret_cast<const __m128*>(&rhs);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			*result = _mm_add_ps(*lv, *rv);
-
-			return _result;
-		}
-
-		__forceinline const Vector4Float operator-(const Vector4Float& rhs) const
-		{
-			Vector4Float _result;
-			const __m128* lv = reinterpret_cast<const __m128*>(this);
-			const __m128* rv = reinterpret_cast<const __m128*>(&rhs);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			*result = _mm_sub_ps(*lv, *rv);
-
-			return _result;
-		}
-
-		__forceinline const Vector4Float operator*(const Vector4Float& rhs) const 
-		{
-			Vector4Float _result;
-			const __m128* lv = reinterpret_cast<const __m128*>(this);
-			const __m128* rv = reinterpret_cast<const __m128*>(&rhs);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			*result = _mm_mul_ps(*lv, *rv);
-
-			return _result;
-		}
-
-		__forceinline const Vector4Float operator*(const float rhs) const
-		{
-			Vector4Float _result;
-			const __m128* v = reinterpret_cast<const __m128*>(this);
-			const __m128 scalar = _mm_set_ps1(rhs);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			*result = _mm_mul_ps(*v, scalar);
-
-			return _result;
-		}
-
-		__forceinline const Vector4Float operator/(const Vector4Float& rhs) const 
-		{
-			Vector4Float _result;
-			const __m128* lv = reinterpret_cast<const __m128*>(this);
-			const __m128* rv = reinterpret_cast<const __m128*>(&rhs);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			*result = _mm_div_ps(*lv, *rv);
-
-			return _result;
-		}
-
-		__forceinline const Vector4Float operator/(const float rhs) const
-		{
-			Vector4Float _result;
-			const __m128* v = reinterpret_cast<const __m128*>(this);
-			const __m128 scalar = _mm_set_ps1(rhs);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			*result = _mm_div_ps(*v, scalar);
-
-			return _result;
-		}
-
-		__forceinline Vector4Float& operator+=(const Vector4Float& rhs)
-		{
-			__m128* result = reinterpret_cast<__m128*>(this);
-			const __m128* v = reinterpret_cast<const __m128*>(&rhs);
-
-			*result = _mm_add_ps(*result, *v);
-
-			return *this;
-		}
-
-		__forceinline Vector4Float& operator-=(const Vector4Float& rhs)
-		{
-			__m128* result = reinterpret_cast<__m128*>(this);
-			const __m128* v = reinterpret_cast<const __m128*>(&rhs);
-
-			*result = _mm_sub_ps(*result, *v);
-
-			return *this;
-		}
-
-		inline void* operator new(size_t size)
-		{
-			void* p = _aligned_malloc(size, 16);
-
-			return p;
-		}
-
-		inline void operator delete(void* p)
-		{
-			_aligned_free(p);
-		}
-
-		__forceinline friend const Vector4Float operator*(const float lhs, const Vector4Float& rhs)
-		{
-			Vector4Float _result;
-			const __m128 scalar = _mm_set1_ps(lhs);
-			const __m128* v = reinterpret_cast<const __m128*>(&rhs);
-			__m128* result = reinterpret_cast<__m128*>(&_result);
-			*result = _mm_mul_ps(*v, scalar);
-
-			return _result;
-		}
-
-		__forceinline friend const bool operator==(const Vector4Float& lhs, const Vector4Float& rhs)
-		{
-			return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z && lhs.w == rhs.w;
-		}
-
-		__forceinline friend const bool operator!=(const Vector4Float& lhs, const Vector4Float& rhs)
-		{
-			return lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z || lhs.w != rhs.w;
-		}
+		__forceinline friend const Vector4 operator*(const float lhs, const Vector4& rhs) { return _mm_mul_ps(rhs.ps, _mm_set_ps1(lhs)); }
+		__forceinline friend const bool operator==(const Vector4& lhs, const Vector4& rhs) { return (_mm_movemask_ps(_mm_cmpeq_ps(lhs.ps, rhs.ps)) & 0b00001111) == 0b00001111; }
+		__forceinline friend const bool operator!=(const Vector4& lhs, const Vector4& rhs) { return lhs != rhs; }
 	};
+
+	const float Dot(const Vector4& lhs, const Vector4& rhs)
+	{
+		__m128 result = _mm_mul_ps(lhs.ps, rhs.ps);
+		result = _mm_hadd_ps(result, result);
+		result = _mm_hadd_ps(result, result);
+
+		return result.m128_f32[0];
+	}
 
 	struct alignas(16) Vector4Int
 	{
@@ -200,16 +104,6 @@ namespace SIMD {
 			float e[4];
 		};
 
-		__forceinline const Vector4Int operator+(const Vector4Int& v)
-		{
-			Vector4Int ret;
-			const __m128i* lv = reinterpret_cast<const __m128i*>(this);
-			const __m128i* rv = reinterpret_cast<const __m128i*>(&v);
-			__m128i* result = reinterpret_cast<__m128i*>(&ret);
-			*result = _mm_add_epi32(*lv, *rv);
-
-			return ret;
-		}
+		//...
 	};
-
 }
