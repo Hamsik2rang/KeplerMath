@@ -3,7 +3,7 @@
 #include <intrin.h>
 #include <stdint.h>
 
-namespace SIMD {
+namespace kepler {
 	
 	struct Vector4;
 	struct Vector4Int;
