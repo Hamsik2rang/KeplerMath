@@ -20,5 +20,9 @@ int main(int argc, char** argv)
 	printf("%f\n", sqlenSum);
 	printf("%f", 3.0f * 3.0f + 4.2f * 4.2f + 3.8f * 3.8f + 1.8f * 1.8f + 7.3f * 7.3f + 2.2f * 2.2f);
 
+	Vector3 v3{ 2.0f,3.0f, 4.0f };
+	v3 = v3.Normalize();
+
+
 	return 0;
 }

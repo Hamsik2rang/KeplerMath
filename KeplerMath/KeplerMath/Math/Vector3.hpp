@@ -5,7 +5,9 @@
 #include <cstring>
 
 namespace kepler {
-
+	struct Vector3;
+	void StoreM128ToVec3(Vector3& v, const __m128& ps);
+	
 	struct Vector3
 	{
 		union
@@ -16,7 +18,7 @@ namespace kepler {
 		};
 
 		Vector3()
-			:x{ 0.0 }
+			:x{ 0.0f }
 			,y{ 0.0f }
 			,z{ 0.0f }
 		{}
@@ -57,7 +59,7 @@ namespace kepler {
 			mul = _mm_hadd_ps(mul, mul);
 			mul = _mm_hadd_ps(mul, mul);
 
-			return _mm_cvtss_f32(ps);
+			return _mm_cvtss_f32(mul);
 		}
 
 		__forceinline const float Length() const
@@ -280,11 +282,11 @@ namespace kepler {
 
 		return _mm_cvtss_f32(result);
 	}
-
+	//TODO: Fix this
 	__forceinline void StoreM128ToVec3(Vector3& v, const __m128& ps)
 	{
 		_mm_storel_pi(reinterpret_cast<__m64*>(&v.x), ps);
-		__m128 z0z0 = _mm_movelh_ps(ps, ps);
+		__m128 z0z0 = _mm_movehl_ps(ps, ps);
 		_mm_store_ss(&v.z, z0z0);
 	}
 
