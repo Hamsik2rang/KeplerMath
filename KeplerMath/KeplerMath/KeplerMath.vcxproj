@@ -144,11 +144,12 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math.hpp" />
+    <ClInclude Include="Math\MathLib.hpp" />
+    <ClInclude Include="Math\Matrix44.hpp" />
+    <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="Math\Vector3.hpp" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="VectorSIMD.hpp" />
-    <ClInclude Include="VectorSIMDTemplate.hpp" />
-    <ClInclude Include="VectorTemplate.hpp" />
+    <ClInclude Include="Math\Vector4.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,8 +3,9 @@
 #include <intrin.h>
 #include <stdint.h>
 
+
 namespace kepler {
-	
+
 	struct Vector4;
 	struct Vector4Int;
 
@@ -38,6 +39,14 @@ namespace kepler {
 
 		Vector4(const Vector4& v) = default;
 		Vector4(Vector4&& v) = default;
+
+		static const Vector4 Zero;
+		static const Vector4 Up;
+		static const Vector4 Down;
+		static const Vector4 Right;
+		static const Vector4 Left;
+		static const Vector4 Front;
+		static const Vector4 Back;
 
 		__forceinline const float SqLength() const
 		{
@@ -77,6 +86,10 @@ namespace kepler {
 
 		__forceinline Vector4& operator+=(const Vector4& rhs) { ps = _mm_add_ps(ps, rhs.ps); return *this; }
 		__forceinline Vector4& operator-=(const Vector4& rhs) { ps = _mm_sub_ps(ps, rhs.ps); return *this; }
+		__forceinline Vector4& operator*=(const Vector4& rhs) { ps = _mm_mul_ps(ps, rhs.ps); return *this; }
+		__forceinline Vector4& operator*=(const float rhs) { ps = _mm_mul_ps(ps, _mm_set_ps1(rhs)); return *this; }
+		__forceinline Vector4& operator/=(const Vector4& rhs) { ps = _mm_div_ps(ps, rhs.ps); return* this; }
+		__forceinline Vector4& operator/=(const float rhs) { ps = _mm_div_ps(ps, _mm_set_ps1(rhs)); return *this; }
 		
 		inline void* operator new(size_t size) { void* p = _aligned_malloc(size, 16); return p; }
 		inline void operator delete(void* p) { _aligned_free(p); }
@@ -85,6 +98,15 @@ namespace kepler {
 		__forceinline friend const bool operator==(const Vector4& lhs, const Vector4& rhs) { return (_mm_movemask_ps(_mm_cmpeq_ps(lhs.ps, rhs.ps)) & 0b00001111) == 0b00001111; }
 		__forceinline friend const bool operator!=(const Vector4& lhs, const Vector4& rhs) { return lhs != rhs; }
 	};
+
+	const Vector4 Vector4::Zero		= { 0.0f, 0.0f, 0.0f, 0.0f };
+	const Vector4 Vector4::Up		= { 0.0f, 1.0f, 0.0f, 0.0f };
+	const Vector4 Vector4::Down		= { 0.0f, -1.0f, 0.0f, 0.0f };
+	const Vector4 Vector4::Right	= { 1.0f, 0.0f, 0.0f, 0.0f };
+	const Vector4 Vector4::Left		= { -1.0f, 0.0f, 0.0f, 0.0f };
+	const Vector4 Vector4::Front	= { 0.0f, 0.0f, 1.0f, 0.0f };
+	const Vector4 Vector4::Back		= { 0.0f, 0.0f, -1.0f, 0.0f };
+
 
 	const float Dot(const Vector4& lhs, const Vector4& rhs)
 	{

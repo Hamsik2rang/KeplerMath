@@ -1,7 +1,7 @@
 #pragma once
 
 #include <intrin.h>
-#include "VectorSIMD.hpp"
+#include "Vector4.hpp"
 
 namespace kepler {
 	namespace meth {
