@@ -142,10 +142,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Math\Constant.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\MathLib.hpp" />
+    <ClInclude Include="Math\Constant.h" />
+    <ClInclude Include="Math\KeplerMath.h" />
+    <ClInclude Include="Math\Base.h" />
+    <ClInclude Include="Math\Interpolation.hpp" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Matrix33.hpp" />
     <ClInclude Include="Math\Matrix44.hpp" />
+    <ClInclude Include="Math\Transformation.hpp" />
+    <ClInclude Include="Math\Trigonometry.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\Vector3.hpp" />
     <ClInclude Include="Timer.h" />

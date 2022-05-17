@@ -3,6 +3,7 @@
 #include <intrin.h>
 #include <stdint.h>
 
+#include "Base.h"
 
 namespace kepler {
 
@@ -18,12 +19,12 @@ namespace kepler {
 		{
 			struct { float x; float y; float z; float w; };
 			struct { float r; float g; float b; float a; };
-			float e[4];
+			float elem[4];
 			__m128 ps;
 		};
 
 		Vector4()
-			:e{ 0,0,0,0 }
+			:elem{ 0,0,0,0 }
 		{}
 
 		Vector4(float _x, float _y, float _z, float _w)
@@ -76,7 +77,7 @@ namespace kepler {
 		__forceinline Vector4& operator=(const Vector4& rhs) { this->ps = rhs.ps; return *this; }
 		__forceinline const Vector4 operator+() { return *this; }
 		__forceinline const Vector4 operator-() { return _mm_mul_ps(ps, _mm_set1_ps(-1.0f)); }
-		__forceinline float& operator[](const int index) { return e[index]; }
+		__forceinline float& operator[](const int index) { return elem[index]; }
 		__forceinline const Vector4 operator+(const Vector4& rhs) const { return _mm_add_ps(ps, rhs.ps); }
 		__forceinline const Vector4 operator-(const Vector4& rhs) const { return _mm_sub_ps(ps, rhs.ps); }
 		__forceinline const Vector4 operator*(const Vector4& rhs) const { return _mm_mul_ps(ps, rhs.ps); }
@@ -116,16 +117,4 @@ namespace kepler {
 
 		return result.m128_f32[0];
 	}
-
-	struct alignas(16) Vector4Int
-	{
-		union
-		{
-			struct { int32_t x; int32_t y; int32_t z; int32_t w; };
-			struct { int32_t r; int32_t g; int32_t b; int32_t a; };
-			float e[4];
-		};
-
-		//...
-	};
 }

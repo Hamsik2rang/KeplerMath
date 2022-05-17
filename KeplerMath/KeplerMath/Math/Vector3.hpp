@@ -4,10 +4,15 @@
 #include <stdint.h>
 #include <cstring>
 
+#include "Vector4.hpp"
+#include "Base.h"
+
 namespace kepler {
+
 	struct Vector3;
+
 	void StoreM128ToVec3(Vector3& v, const __m128& ps);
-	
+
 	struct Vector3
 	{
 		union
@@ -79,6 +84,15 @@ namespace kepler {
 			Vector3 result;
 			StoreM128ToVec3(result, ps);
 
+			return result;
+		}
+
+		__forceinline const Vector4 ToAffine() const
+		{
+			__m128 xyz0 = ToM128();
+			__m128 xz11 = _mm_shuffle_ps(xyz0, _mm_set1_ps(1.0f), KP_MM_SHUFFLE_LE(0, 2, 0, 0));
+			__m128 result = _mm_shuffle_ps(xyz0, xz11, KP_MM_SHUFFLE_LE(0, 1, 1, 2));
+		
 			return result;
 		}
 
@@ -257,8 +271,8 @@ namespace kepler {
 	{
 		__m128 lps = lhs.ToM128();
 		__m128 rps = rhs.ToM128();
-		__m128 lmul = _mm_mul_ps(_mm_shuffle_ps(lps, lps, _MM_SHUFFLE(1, 2, 0, 3)), _mm_shuffle_ps(rps, rps, _MM_SHUFFLE(2, 0, 1, 3)));
-		__m128 rmul = _mm_mul_ps(_mm_shuffle_ps(lps, lps, _MM_SHUFFLE(2, 0, 1, 3)), _mm_shuffle_ps(rps, rps, _MM_SHUFFLE(1, 2, 0, 3)));
+		__m128 lmul = _mm_mul_ps(_mm_shuffle_ps(lps, lps, KP_MM_SHUFFLE_LE(1, 2, 0, 3)), _mm_shuffle_ps(rps, rps, KP_MM_SHUFFLE_LE(2, 0, 1, 3)));
+		__m128 rmul = _mm_mul_ps(_mm_shuffle_ps(lps, lps, KP_MM_SHUFFLE_LE(2, 0, 1, 3)), _mm_shuffle_ps(rps, rps, KP_MM_SHUFFLE_LE(1, 2, 0, 3)));
 		__m128 cross = _mm_sub_ps(lmul, rmul);
 
 		return Vector3(cross.m128_f32[0], cross.m128_f32[1], cross.m128_f32[2]);
@@ -290,6 +304,7 @@ namespace kepler {
 		_mm_store_ss(&v.z, z0z0);
 	}
 
+
 	const Vector3 Vector3::Zero		= { 0.0f, 0.0f, 0.0f };
 	const Vector3 Vector3::Up		= { 0.0f, 1.0f, 0.0f };
 	const Vector3 Vector3::Down		= { 0.0f, -1.0f, 0.0f };
@@ -297,4 +312,6 @@ namespace kepler {
 	const Vector3 Vector3::Left		= { -1.0f, 0.0f, 0.0f };	
 	const Vector3 Vector3::Front	= { 0.0f, 0.0f, 1.0f };
 	const Vector3 Vector3::Back		= { 0.0f, 0.0f, -1.0f };
+
+	using Vec3 = Vector3;
 }
