@@ -5,15 +5,13 @@ namespace kepler {
 	namespace math {
 		namespace constant {
 
-			constexpr float PI = 3.141592f;
-			constexpr float PIDIV2 = PI / 2;
-			constexpr float PIDIV4 = PI / 4;
-			constexpr float PIDIV6 = PI / 6;
+			const float PI = 3.141592f;
+			const float PIDIV2 = PI / 2;
+			const float PIDIV4 = PI / 4;
+			const float PIDIV6 = PI / 6;
 
-			constexpr float E = 2.7182818f;
-			constexpr float Epsilon = 1.732e-7f;
-
-
+			const float E = 2.7182818f;
+			const float Epsilon = 1.732e-7f;
 		}
 	}
 }

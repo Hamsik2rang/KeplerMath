@@ -31,8 +31,9 @@ int main(int argc, char** argv)
 
 
 	Vector3 v3{ 2.0f,3.0f, 4.0f };
-	v3 = v3.Normalize();
 
+	auto t1 = v3.Length();
+	auto t2 = v3.SqLength();
 
 	return 0;
 }

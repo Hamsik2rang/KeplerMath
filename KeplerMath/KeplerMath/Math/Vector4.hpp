@@ -24,7 +24,7 @@ namespace kepler {
 		};
 
 		Vector4()
-			:elem{ 0,0,0,0 }
+			:elem{ 0.0f}
 		{}
 
 		Vector4(float _x, float _y, float _z, float _w)
@@ -74,9 +74,9 @@ namespace kepler {
 		}
 
 		// Operator Overloadings
-		__forceinline Vector4& operator=(const Vector4& rhs) { this->ps = rhs.ps; return *this; }
-		__forceinline const Vector4 operator+() { return *this; }
-		__forceinline const Vector4 operator-() { return _mm_mul_ps(ps, _mm_set1_ps(-1.0f)); }
+		__forceinline Vector4& operator=(const Vector4& rhs) { ps = rhs.ps; return *this; }
+		__forceinline const Vector4 operator+() const { return *this; }
+		__forceinline const Vector4 operator-() const { return _mm_mul_ps(ps, _mm_set1_ps(-1.0f)); }
 		__forceinline float& operator[](const int index) { return elem[index]; }
 		__forceinline const Vector4 operator+(const Vector4& rhs) const { return _mm_add_ps(ps, rhs.ps); }
 		__forceinline const Vector4 operator-(const Vector4& rhs) const { return _mm_sub_ps(ps, rhs.ps); }

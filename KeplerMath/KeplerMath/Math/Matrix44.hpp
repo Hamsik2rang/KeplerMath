@@ -108,12 +108,9 @@ namespace kepler {
 
 		__forceinline const Matrix44 operator-() const
 		{
-			row[0] = -row[0];
-			row[1] = -row[1];
-			row[2] = -row[2];
-			row[3] = -row[3];
+			Matrix44 result = { -row[0], -row[1], -row[2], -row[3] };
 
-			return *this;
+			return result;
 		}
 		
 		__forceinline Vector4& operator[](int index)
