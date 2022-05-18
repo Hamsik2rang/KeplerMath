@@ -159,10 +159,10 @@ namespace kepler {
 			Matrix44 result{};
 			for (int i = 0; i < 4; i++)
 			{
-				__m128 xxxx = _mm_shuffle_ps(row[0].ps, row[0].ps, KP_MM_SHUFFLE_LE(0, 0, 0, 0));
-				__m128 yyyy = _mm_shuffle_ps(row[1].ps, row[1].ps, KP_MM_SHUFFLE_LE(1, 1, 1, 1));
-				__m128 zzzz = _mm_shuffle_ps(row[2].ps, row[2].ps, KP_MM_SHUFFLE_LE(2, 2, 2, 2));
-				__m128 wwww = _mm_shuffle_ps(row[3].ps, row[3].ps, KP_MM_SHUFFLE_LE(3, 3, 3, 3));
+				__m128 xxxx = _mm_shuffle_ps(row[i].ps, row[i].ps, KP_MM_SHUFFLE_LE(0, 0, 0, 0));
+				__m128 yyyy = _mm_shuffle_ps(row[i].ps, row[i].ps, KP_MM_SHUFFLE_LE(1, 1, 1, 1));
+				__m128 zzzz = _mm_shuffle_ps(row[i].ps, row[i].ps, KP_MM_SHUFFLE_LE(2, 2, 2, 2));
+				__m128 wwww = _mm_shuffle_ps(row[i].ps, row[i].ps, KP_MM_SHUFFLE_LE(3, 3, 3, 3));
 
 				__m128 e0 = _mm_mul_ps(xxxx, rhs.row[0].ps);
 				__m128 e1 = _mm_mul_ps(yyyy, rhs.row[1].ps);

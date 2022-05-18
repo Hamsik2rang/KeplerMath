@@ -24,7 +24,8 @@ int main(int argc, char** argv)
 	m = m.Transpose();
 	std::cout << m << "\n";
 
-	//std::cout << m * Mat44f::Identity;
+	auto mul = m * Mat44f::Identity;
+	std::cout << mul;
 
 	Vector3 v = { 1.0f, 3.0f, 5.0f };
 	Vector4 v4 = v.ToAffine();
