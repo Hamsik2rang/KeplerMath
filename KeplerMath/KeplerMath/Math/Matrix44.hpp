@@ -50,6 +50,7 @@ namespace kepler {
 
 		Matrix44(const Matrix44& mat) = default;
 		Matrix44(Matrix44&& mat) = default;
+		//--------------------------------------------------------
 
 		// Member Functions --------------------------------------
 		__forceinline const Matrix44 Transpose() const
@@ -87,7 +88,6 @@ namespace kepler {
 
 			return result;
 		};
-
 		//--------------------------------------------------------
 		
 		// Operator Overloadings ---------------------------------
@@ -247,7 +247,6 @@ namespace kepler {
 
 		inline void* operator new(size_t size) { void* p = _aligned_malloc(size, 16); return p; }
 		inline void operator delete(void* p) { _aligned_free(p); }
-
 		//--------------------------------------------------------
 		
 		// Friend Operator Overloadings --------------------------

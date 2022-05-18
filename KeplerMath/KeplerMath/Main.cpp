@@ -12,29 +12,8 @@ using namespace kepler;
 
 int main(int argc, char** argv)
 {
-	Mat44f m = {
-		1.0f, 2.0f, 3.0f, 4.0f,
-		5.0f, 6.0f, 7.0f, 8.0f,
-		-1.0f, -2.0f, -3.0f, -4.0f,
-		-5.0f, -6.0f, -7.0f, -8.0f
-	};
-
-	std::cout << m << "\n";
-
-	m = m.Transpose();
-	std::cout << m << "\n";
-
-	auto mul = m * Mat44f::Identity;
-	std::cout << mul;
-
-	Vector3 v = { 1.0f, 3.0f, 5.0f };
-	Vector4 v4 = v.ToAffine();
-
-
-	Vector3 v3{ 2.0f,3.0f, 4.0f };
-
-	auto t1 = v3.Length();
-	auto t2 = v3.SqLength();
+	__m128 m{ 1.0f, 3.0f, 2.0f, 8.0f };
+	Vec3f v;
 
 	return 0;
 }

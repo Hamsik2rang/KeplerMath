@@ -21,7 +21,17 @@ namespace kepler {
 			struct { float r; float g; float b; };
 			float elem[3];
 		};
+		// Static Variables --------------------------------------
+		static const Vector3 Zero;
+		static const Vector3 Up;
+		static const Vector3 Down;
+		static const Vector3 Right;
+		static const Vector3 Left;
+		static const Vector3 Front;
+		static const Vector3 Back;
+		//--------------------------------------------------------
 
+		// Constructor -------------------------------------------
 		Vector3()
 			:x{ 0.0f }
 			,y{ 0.0f }
@@ -37,15 +47,9 @@ namespace kepler {
 		Vector3(const float(&_elem)[3])
 			:elem{ _elem[0], _elem[1], _elem[2] }
 		{}
+		//--------------------------------------------------------
 
-		static const Vector3 Zero;
-		static const Vector3 Up;
-		static const Vector3 Down;
-		static const Vector3 Right;
-		static const Vector3 Left;
-		static const Vector3 Front;
-		static const Vector3 Back;
-
+		// Member Functions --------------------------------------
 		__forceinline const __m128 ToM128() const
 		{
 			__m128 zero = _mm_set1_ps(0.0f);
@@ -95,8 +99,9 @@ namespace kepler {
 		
 			return result;
 		}
+		//--------------------------------------------------------
 
-		// Operator Overloadings
+		// Operator Overloadings ---------------------------------
 		__forceinline float& operator[](int index) { /*Need assert*/ return elem[index]; }
 		__forceinline const float operator[](int index) const { return elem[index]; }
 		__forceinline const Vector3 operator+() const { return *this; }
@@ -246,8 +251,9 @@ namespace kepler {
 
 			return *this;
 		}
+		//--------------------------------------------------------
 
-		// Friend Operator Overloadings
+		// Friend Operator Overloadings --------------------------
 		__forceinline friend const Vector3 operator*(const float lhs, const Vector3& rhs)
 		{
 			return rhs * lhs;
@@ -265,8 +271,20 @@ namespace kepler {
 		{
 			return !(lhs == rhs);
 		}
+		//--------------------------------------------------------
 	};
 
+	// Static Variables --------------------------------------
+	const Vector3 Vector3::Zero = { 0.0f, 0.0f, 0.0f };
+	const Vector3 Vector3::Up = { 0.0f, 1.0f, 0.0f };
+	const Vector3 Vector3::Down = { 0.0f, -1.0f, 0.0f };
+	const Vector3 Vector3::Right = { 1.0f, 0.0f, 0.0f };
+	const Vector3 Vector3::Left = { -1.0f, 0.0f, 0.0f };
+	const Vector3 Vector3::Front = { 0.0f, 0.0f, 1.0f };
+	const Vector3 Vector3::Back = { 0.0f, 0.0f, -1.0f };
+	//--------------------------------------------------------
+
+	// Global Functions --------------------------------------
 	const Vector3 Cross(const Vector3& lhs, const Vector3& rhs)
 	{
 		__m128 lps = lhs.ToM128();
@@ -296,22 +314,14 @@ namespace kepler {
 
 		return _mm_cvtss_f32(result);
 	}
-	//TODO: Fix this
+
 	__forceinline void StoreM128ToVec3(Vector3& v, const __m128& ps)
 	{
 		_mm_storel_pi(reinterpret_cast<__m64*>(&v.x), ps);
 		__m128 z0z0 = _mm_movehl_ps(ps, ps);
 		_mm_store_ss(&v.z, z0z0);
 	}
+	//--------------------------------------------------------
 
-
-	const Vector3 Vector3::Zero		= { 0.0f, 0.0f, 0.0f };
-	const Vector3 Vector3::Up		= { 0.0f, 1.0f, 0.0f };
-	const Vector3 Vector3::Down		= { 0.0f, -1.0f, 0.0f };
-	const Vector3 Vector3::Right	= { 1.0f, 0.0f, 0.0f };
-	const Vector3 Vector3::Left		= { -1.0f, 0.0f, 0.0f };	
-	const Vector3 Vector3::Front	= { 0.0f, 0.0f, 1.0f };
-	const Vector3 Vector3::Back		= { 0.0f, 0.0f, -1.0f };
-
-	using Vec3 = Vector3;
+	using Vec3f = Vector3;
 }

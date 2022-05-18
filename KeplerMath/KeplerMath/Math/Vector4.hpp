@@ -22,7 +22,17 @@ namespace kepler {
 			float elem[4];
 			__m128 ps;
 		};
-
+		// Static Variables --------------------------------------
+		static const Vector4 Zero;
+		static const Vector4 Up;
+		static const Vector4 Down;
+		static const Vector4 Right;
+		static const Vector4 Left;
+		static const Vector4 Front;
+		static const Vector4 Back;
+		//--------------------------------------------------------
+		
+		// Constructor -------------------------------------------
 		Vector4()
 			:elem{ 0.0f}
 		{}
@@ -40,15 +50,9 @@ namespace kepler {
 
 		Vector4(const Vector4& v) = default;
 		Vector4(Vector4&& v) = default;
-
-		static const Vector4 Zero;
-		static const Vector4 Up;
-		static const Vector4 Down;
-		static const Vector4 Right;
-		static const Vector4 Left;
-		static const Vector4 Front;
-		static const Vector4 Back;
-
+		//--------------------------------------------------------
+		
+		// Member Functions --------------------------------------
 		__forceinline const float SqLength() const
 		{
 			__m128 result = _mm_mul_ps(ps, ps);
@@ -72,8 +76,9 @@ namespace kepler {
 			
 			return result;
 		}
+		//--------------------------------------------------------
 
-		// Operator Overloadings
+		// Operator Overloadings ---------------------------------
 		__forceinline Vector4& operator=(const Vector4& rhs) { ps = rhs.ps; return *this; }
 		__forceinline const Vector4 operator+() const { return *this; }
 		__forceinline const Vector4 operator-() const { return _mm_mul_ps(ps, _mm_set1_ps(-1.0f)); }
@@ -94,12 +99,16 @@ namespace kepler {
 		
 		inline void* operator new(size_t size) { void* p = _aligned_malloc(size, 16); return p; }
 		inline void operator delete(void* p) { _aligned_free(p); }
+		//--------------------------------------------------------
 
+		// Friend Operator Overloadings --------------------------
 		__forceinline friend const Vector4 operator*(const float lhs, const Vector4& rhs) { return _mm_mul_ps(rhs.ps, _mm_set_ps1(lhs)); }
 		__forceinline friend const bool operator==(const Vector4& lhs, const Vector4& rhs) { return (_mm_movemask_ps(_mm_cmpeq_ps(lhs.ps, rhs.ps)) & 0b00001111) == 0b00001111; }
 		__forceinline friend const bool operator!=(const Vector4& lhs, const Vector4& rhs) { return lhs != rhs; }
+		//--------------------------------------------------------
 	};
 
+	// Static Variables --------------------------------------
 	const Vector4 Vector4::Zero		= { 0.0f, 0.0f, 0.0f, 0.0f };
 	const Vector4 Vector4::Up		= { 0.0f, 1.0f, 0.0f, 0.0f };
 	const Vector4 Vector4::Down		= { 0.0f, -1.0f, 0.0f, 0.0f };
@@ -107,14 +116,19 @@ namespace kepler {
 	const Vector4 Vector4::Left		= { -1.0f, 0.0f, 0.0f, 0.0f };
 	const Vector4 Vector4::Front	= { 0.0f, 0.0f, 1.0f, 0.0f };
 	const Vector4 Vector4::Back		= { 0.0f, 0.0f, -1.0f, 0.0f };
+	//--------------------------------------------------------
 
-
+	// Global Functions --------------------------------------
 	const float Dot(const Vector4& lhs, const Vector4& rhs)
 	{
+		//ax by cz dw
 		__m128 result = _mm_mul_ps(lhs.ps, rhs.ps);
+		// ax+by cz+dw ax+by cz+dw
 		result = _mm_hadd_ps(result, result);
+		// ax+by+cz+dw ax+by+cz+dw ax+by+cz+dw ax+by+cz+dw
 		result = _mm_hadd_ps(result, result);
 
 		return result.m128_f32[0];
 	}
+	//--------------------------------------------------------
 }

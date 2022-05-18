@@ -88,9 +88,7 @@ namespace kepler {
 
 		__forceinline const Matrix33 operator-() const
 		{
-			row[0] = -row[0];
-			row[1] = -row[1];
-			row[2] = -row[2];
+			Matrix33 result{ -row[0], -row[1], -row[2] };
 
 			return *this;
 		}

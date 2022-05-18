@@ -10,7 +10,7 @@
 namespace kepler {
 	namespace math {
 
-		const Mat44f GetTransformMatrix(const Vector3& position)
+		const Mat44f GetTransform(const Vector3& position)
 		{
 			Mat44f T{
 				1.0f,		0.0f,		0.0f,		0.0f,
@@ -22,33 +22,52 @@ namespace kepler {
 			return T;
 		}
 
-		const Mat44f GetRotationMatrix(const Vector3& rotation)
+		const Mat44f GetRotationX(const float angle)
 		{
 			Mat44f Rx{
-				1.0f, 0.0f,					0.0f,				0.0f,
-				0.0f, ::cosf(rotation.x),	::sinf(rotation.x),	0.0f,
-				0.0f, -::sinf(rotation.x),	cosf(rotation.x),	0.0f,
-				0.0f, 0.0f,					0.0f,				1.0f
+				1.0f, 0.0f,				0.0f,			0.0f,
+				0.0f, ::cosf(angle),	::sinf(angle),	0.0f,
+				0.0f, -::sinf(angle),	cosf(angle),	0.0f,
+				0.0f, 0.0f,				0.0f,			1.0f
 			};
 
+			return Rx;
+		}
+
+		const Mat44f GetRotationY(const float angle)
+		{
 			Mat44f Ry{
-				::cosf(rotation.y),  0.0f, -::sinf(rotation.y), 0.0f,
-				0.0f,				 1.0f, 0.0f,			    0.0f,
-				::sinf(rotation.y), 0.0f, ::cosf(rotation.y),	0.0f,
-				0.0f,				 0.0f, 0.0f,				1.0f
+				::cosf(angle),  0.0f, -::sinf(angle),	0.0f,
+				0.0f,			1.0f, 0.0f,				0.0f,
+				::sinf(angle),	0.0f, ::cosf(angle),	0.0f,
+				0.0f,			0.0f, 0.0f,				1.0f
 			};
 
+			return Ry;
+		}
+
+		const Mat44f GetRotationZ(const float angle)
+		{
 			Mat44f Rz{
-				::cosf(rotation.z),		::sinf(rotation.z), 0.0f, 0.0f,
-				-::sinf(rotation.z),	::cosf(rotation.z), 0.0f, 0.0f,
-				0.0f,					0.0f,				1.0f, 0.0f,
-				0.0f,					0.0f,				0.0f, 1.0f
+				::cosf(angle),	::sinf(angle),	0.0f, 0.0f,
+				-::sinf(angle),	::cosf(angle),	0.0f, 0.0f,
+				0.0f,			0.0f,			1.0f, 0.0f,
+				0.0f,			0.0f,			0.0f, 1.0f
 			};
+
+			return Rz;
+		}
+
+		const Mat44f GetRotation(const Vector3& rotation)
+		{
+			Mat44f Rx = GetRotationX(rotation.x);
+			Mat44f Ry = GetRotationY(rotation.y);
+			Mat44f Rz = GetRotationZ(rotation.z);
 
 			return Rx * Ry * Rz;
 		}
 
-		const Mat44f GetScalingMatrix(const Vector3& scale)
+		const Mat44f GetScaling(const Vector3& scale)
 		{
 			Mat44f scaling{
 				scale.x,	0.0f,		0.0f,		0.0f,
@@ -60,17 +79,17 @@ namespace kepler {
 			return scaling;
 		}
 
-		const Mat44f WorldMatrix(const Vector3& position, const Vector3& rotation, const Vector3& scale)
+		const Mat44f World(const Vector3& position, const Vector3& rotation, const Vector3& scale)
 		{
-			return GetScalingMatrix(scale) * GetRotationMatrix(rotation) * GetTransformMatrix(position);
+			return GetScaling(scale) * GetRotation(rotation) * GetTransform(position);
 		}
 
 		const Mat44f LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
 		{
 			// Gram-Schmidt process
-			Vec3 right = Cross(worldUp, at).Normalize();
-			Vec3 up = Cross(at, right).Normalize();
-			Vec3 front = Cross(right, up);
+			Vec3f right = Cross(worldUp, at).Normalize();
+			Vec3f up = Cross(at, right).Normalize();
+			Vec3f front = Cross(right, up);
 
 			Mat44f view{
 				right.x,	up.x,	front.z,	0.0f,
@@ -102,8 +121,6 @@ namespace kepler {
 				0.0f, 0.0f, -2.0f / (far - near),	-(far + near) / (far - near),
 				0.0f, 0.0f, 0.0f, 1.0f
 			};
-
-
 		}
 	}
 }
