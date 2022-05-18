@@ -152,6 +152,7 @@
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Matrix33.hpp" />
     <ClInclude Include="Math\Matrix44.hpp" />
+    <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Transformation.hpp" />
     <ClInclude Include="Math\Trigonometry.h" />
     <ClInclude Include="Math\Vector.h" />
