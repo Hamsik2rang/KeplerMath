@@ -9,7 +9,7 @@
 
 
 namespace kepler {
-
+	// row-majer matrix
 	struct alignas(16) Matrix44
 	{
 		union
