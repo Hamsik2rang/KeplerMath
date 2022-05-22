@@ -8,31 +8,15 @@
 
 namespace kepler {
 
-	class Quaternion
+	struct Quaternion
 	{
-	private:
 		float w;
 		union
 		{
 			struct { float x; float y; float z;  };
-			float img[3];
 			Vec3f v;
 		};
-		// Constructor -------------------------------------------
-		Quaternion(const float _x, const float _y, const float _z, const float _w = 1.0f)
-			: x{ _x }
-			, y{ _y }
-			, z{ _z }
-			, w{ _w }
-		{}
 
-		Quaternion(const Vector3& _v, const float _w = 1.0f)
-			: v{ _v }
-			, w{ _w }
-		{}
-		//--------------------------------------------------------
-
-	public:
 		// Static Variables --------------------------------------
 		static const Quaternion Identity;
 		//--------------------------------------------------------
@@ -44,6 +28,19 @@ namespace kepler {
 			, z{ 0.0f }
 			, w{ 1.0f }
 		{}
+
+		Quaternion(const float _x, const float _y, const float _z, const float _w = 1.0f)
+			: x{ _x }
+			, y{ _y }
+			, z{ _z }
+			, w{ _w }
+		{}
+
+		Quaternion(const Vector3& _v, const float _w = 1.0f)
+			: v{ _v }
+			, w{ _w }
+		{}
+
 		Quaternion(const Quaternion& q) = default;
 		Quaternion(Quaternion&& q) = default;
 		//--------------------------------------------------------
@@ -70,6 +67,17 @@ namespace kepler {
 			q.x = sp * cy * cr - cp * sy * sr;
 			q.y = cp * sy * cr + sp * cy * sr;
 			q.z = cp * cy * sr - sp * sy * cr;
+
+			return q;
+		}
+
+		static const Quaternion FromAxisAngle(const Vector3& axis, const float angle)
+		{
+			Quaternion q = Quaternion::Identity;
+			float halfRadian = math::DegToRad(angle) / 2.0f;
+
+			q.w = ::cosf(halfRadian);
+			q.v = axis * ::sinf(halfRadian);
 
 			return q;
 		}
