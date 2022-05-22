@@ -8,8 +8,9 @@
 
 namespace kepler {
 
-	struct Quaternion
+	class Quaternion
 	{
+	private:
 		float w;
 		union
 		{
@@ -17,19 +18,7 @@ namespace kepler {
 			float img[3];
 			Vec3f v;
 		};
-
-		// Static Variables --------------------------------------
-		static const Quaternion Identity;
-		//--------------------------------------------------------
-
 		// Constructor -------------------------------------------
-		Quaternion()
-			: x{ 0.0f }
-			, y{ 0.0f }
-			, z{ 0.0f }
-			, w{ 1.0f }
-		{}
-
 		Quaternion(const float _x, const float _y, const float _z, const float _w = 1.0f)
 			: x{ _x }
 			, y{ _y }
@@ -41,13 +30,50 @@ namespace kepler {
 			: v{ _v }
 			, w{ _w }
 		{}
+		//--------------------------------------------------------
 
+	public:
+		// Static Variables --------------------------------------
+		static const Quaternion Identity;
+		//--------------------------------------------------------
+
+		// Constructor -------------------------------------------
+		Quaternion()
+			: x{ 0.0f }
+			, y{ 0.0f }
+			, z{ 0.0f }
+			, w{ 1.0f }
+		{}
 		Quaternion(const Quaternion& q) = default;
 		Quaternion(Quaternion&& q) = default;
 		//--------------------------------------------------------
 	
 		// Static Member Functions -------------------------------
-		
+		static const Quaternion FromEuler(const Vector3& v)
+		{
+			// It's implemented on left-handed coordinated.
+			// Angles are measured clockwise when looking along the rotation axis toward the origin.
+			// The order of transformation is pitch firat, then yaw, then roll. 
+			Vector3 angle = v * 0.5f;
+			
+			float cp = ::cosf(math::DegToRad(angle.x));
+			float cy = ::cosf(math::DegToRad(angle.y));
+			float cr = ::cosf(math::DegToRad(angle.z));
+
+			float sp = ::sinf(math::DegToRad(angle.x));
+			float sy = ::sinf(math::DegToRad(angle.y));
+			float sr = ::sinf(math::DegToRad(angle.z));
+
+			Quaternion q = Quaternion::Identity;
+
+			q.w = cp * cy * cr + sp * sy * sr;
+			q.x = sp * cy * cr - cp * sy * sr;
+			q.y = cp * sy * cr + sp * cy * sr;
+			q.z = cp * cy * sr - sp * sy * cr;
+
+			return q;
+		}
+
 		//--------------------------------------------------------
 
 		// Member Functions --------------------------------------

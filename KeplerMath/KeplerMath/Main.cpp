@@ -13,11 +13,10 @@ using namespace kepler;
 
 int main(int argc, char** argv)
 {
-	Quaternion x = { ::sinf(math::DegToRad(30.0f)) * Vec3f::Right, ::cosf(math::DegToRad(30.0f)) };
-	Quaternion y = { ::sinf(math::DegToRad(30.0f)) * Vec3f::Up, ::cosf(math::DegToRad(30.0f)) };
-	Quaternion z = { ::sinf(math::DegToRad(30.0f)) * Vec3f::Front, ::cosf(math::DegToRad(30.0f)) };
+	auto result = z * (y * x);
 
-	auto result = x * y * z;
+	Quaternion q = Quaternion::FromEuler({ 60.0f, 60.0f, 60.0f });
+	auto v = q.ToEuler();
 
 	return 0;
 }
