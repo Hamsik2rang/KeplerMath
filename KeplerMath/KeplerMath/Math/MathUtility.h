@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Base.h"
+#include "Constant.h"
 
 namespace kepler {
-
 	namespace math {
 
 		inline float DegToRad(float degree)
@@ -21,5 +20,22 @@ namespace kepler {
 			// radian(rad) = 180' * radian / pi
 			return radian * 180.0f / constant::PI;
 		}
+
+		const float Clamp(float f, float min, float max)
+		{
+			if (min >= max)
+			{
+				float temp = min;
+				min = max;
+				max = min;
+			}
+
+			if (f < min) f = min;
+			else if (f > max) f = max;
+
+			return f;
+		}
+
+
 	}
 }

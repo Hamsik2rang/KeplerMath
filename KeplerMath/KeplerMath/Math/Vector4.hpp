@@ -1,9 +1,8 @@
 #pragma once
 
-#include <intrin.h>
 #include <stdint.h>
 
-#include "Base.h"
+#include "Intrinsic.h"
 
 namespace kepler {
 

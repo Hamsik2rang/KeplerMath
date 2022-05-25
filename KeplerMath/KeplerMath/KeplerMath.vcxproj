@@ -146,19 +146,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Constant.h" />
-    <ClInclude Include="Math\KeplerMath.h" />
-    <ClInclude Include="Math\Base.h" />
     <ClInclude Include="Math\Interpolation.hpp" />
+    <ClInclude Include="Math\Intrinsic.h" />
+    <ClInclude Include="Math\KeplerMath.h" />
+    <ClInclude Include="Math\MathUtility.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Matrix33.hpp" />
     <ClInclude Include="Math\Matrix44.hpp" />
     <ClInclude Include="Math\Quaternion.h" />
     <ClInclude Include="Math\Transformation.hpp" />
-    <ClInclude Include="Math\Trigonometry.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\Vector3.hpp" />
-    <ClInclude Include="Timer.h" />
     <ClInclude Include="Math\Vector4.hpp" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

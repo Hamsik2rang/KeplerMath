@@ -2,9 +2,9 @@
 
 #include <cmath>
 
-#include "Base.h"
+#include "Intrinsic.h"
+#include "MathUtility.h"
 #include "Vector3.hpp"
-#include "Trigonometry.h"
 
 namespace kepler {
 
@@ -46,11 +46,12 @@ namespace kepler {
 		//--------------------------------------------------------
 	
 		// Static Member Functions -------------------------------
+
+		// It's implemented on left-handed coordinated.
+		// Angles are measured clockwise when looking along the rotation axis toward the origin.
+		// The order of transformation is pitch firat, then yaw, then roll.
 		static const Quaternion FromEuler(const Vector3& v)
 		{
-			// It's implemented on left-handed coordinated.
-			// Angles are measured clockwise when looking along the rotation axis toward the origin.
-			// The order of transformation is pitch firat, then yaw, then roll. 
 			Vector3 angle = v * 0.5f;
 			
 			float cp = ::cosf(math::DegToRad(angle.x));
@@ -73,7 +74,7 @@ namespace kepler {
 
 		static const Quaternion FromAxisAngle(const Vector3& axis, const float angle)
 		{
-			Quaternion q = Quaternion::Identity;
+			Quaternion q{};
 			float halfRadian = math::DegToRad(angle) / 2.0f;
 
 			q.w = ::cosf(halfRadian);

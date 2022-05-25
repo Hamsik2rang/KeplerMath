@@ -5,3 +5,4 @@
 #include "Matrix.h"
 #include "Quaternion.h"
 #include "Interpolation.hpp"
+#include "MathUtility.h"

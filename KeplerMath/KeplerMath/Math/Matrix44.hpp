@@ -1,10 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include <intrin.h>
 #include <stdint.h>
 
-#include "Base.h"
+#include "Intrinsic.h"
 #include "Vector4.hpp"
 
 
@@ -27,7 +26,7 @@ namespace kepler {
 			: elem{ 0.0f }
 		{}
 
-		Matrix44(const float const _elem[16])
+		Matrix44(_In_reads_(16) const float* const _elem)
 			: elem{ _elem[0],  _elem[1],  _elem[2],  _elem[3],
 					_elem[4],  _elem[5],  _elem[6],  _elem[7],
 					_elem[8],  _elem[9],  _elem[10], _elem[11],

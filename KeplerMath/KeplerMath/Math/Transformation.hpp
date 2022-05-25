@@ -1,12 +1,10 @@
 #pragma once
 
-#include <intrin.h>
-
-#include "Base.h"
+#include "Intrinsic.h"
 #include "Matrix.h"
 #include "Vector.h"
 #include "Quaternion.h"
-#include "Trigonometry.h"
+#include "MathUtility.h"
 
 namespace kepler {
 	namespace math {

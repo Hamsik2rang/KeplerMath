@@ -1,6 +1,6 @@
 #pragma once
 
-#include <intrin.h>
+#include "Intrinsic.h"
 #include "Vector3.hpp"
 
 namespace kepler {
@@ -23,7 +23,7 @@ namespace kepler {
 			: elem{ 0.0f }
 		{}
 
-		Matrix33(const float const _elem[9])
+		Matrix33(_In_reads_(16) const float* const _elem)
 			: elem{ _elem[0], _elem[1],_elem[2],
 					_elem[3], _elem[4], _elem[5],
 					_elem[6], _elem[7], _elem[8]}
