@@ -52,6 +52,7 @@ namespace kepler {
 		// The order of transformation is pitch firat, then yaw, then roll.
 		static const Quaternion FromEuler(const Vector3& v)
 		{
+			
 			Vector3 angle = v * 0.5f;
 			
 			float cp = ::cosf(math::DegToRad(angle.x));
@@ -74,7 +75,7 @@ namespace kepler {
 
 		static const Quaternion FromAxisAngle(const Vector3& axis, const float angle)
 		{
-			Quaternion q{};
+			Quaternion q = Quaternion::Identity;
 			float halfRadian = math::DegToRad(angle) / 2.0f;
 
 			q.w = ::cosf(halfRadian);
@@ -144,8 +145,4 @@ namespace kepler {
 
 		//--------------------------------------------------------
 	};
-	// Static Variables --------------------------------------
-	const Quaternion Quaternion::Identity = { 0.0f, 0.0f, 0.0f };
-
-	//--------------------------------------------------------
 }

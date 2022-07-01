@@ -9,7 +9,7 @@
 namespace kepler {
 	namespace math {
 
-		const Mat44f GetTransformMatrix(const Vector3& position)
+		inline const Mat44f GetTranslateMatrix(const Vector3& position)
 		{
 			Mat44f T{
 				1.0f,		0.0f,		0.0f,		0.0f,
@@ -21,7 +21,7 @@ namespace kepler {
 			return T;
 		}
 
-		const Mat44f GetRotationMatrixX(const float angle)
+		inline const Mat44f GetRotationMatrixX(const float angle)
 		{
 			Mat44f Rx{
 				1.0f, 0.0f,				0.0f,			0.0f,
@@ -33,7 +33,7 @@ namespace kepler {
 			return Rx;
 		}
 
-		const Mat44f GetRotationMatrixY(const float angle)
+		inline const Mat44f GetRotationMatrixY(const float angle)
 		{
 			Mat44f Ry{
 				::cosf(angle),  0.0f, -::sinf(angle),	0.0f,
@@ -45,7 +45,7 @@ namespace kepler {
 			return Ry;
 		}
 
-		const Mat44f GetRotationMatrixZ(const float angle)
+		inline const Mat44f GetRotationMatrixZ(const float angle)
 		{
 			Mat44f Rz{
 				::cosf(angle),	::sinf(angle),	0.0f, 0.0f,
@@ -57,7 +57,7 @@ namespace kepler {
 			return Rz;
 		}
 
-		const Mat44f GetRotationMatrix(const Quaternion& rotation)
+		inline const Mat44f GetRotationMatrix(const Quaternion& rotation)
 		{
 			const Quaternion& q = rotation;
 			Mat44f R = {
@@ -70,7 +70,7 @@ namespace kepler {
 			return R;
 		}
 
-		const Mat44f GetScalingMatrix(const Vector3& scale)
+		inline const Mat44f GetScalingMatrix(const Vector3& scale)
 		{
 			Mat44f scaling{
 				scale.x,	0.0f,		0.0f,		0.0f,
@@ -82,14 +82,13 @@ namespace kepler {
 			return scaling;
 		}
 
-		const Mat44f GetWorldMatrix(const Vector3& position, const Quaternion& rotation, const Vector3& scale)
+		inline const Mat44f GetWorldMatrix(const Vector3& position, const Quaternion& rotation, const Vector3& scale)
 		{
-			return GetScalingMatrix(scale) * GetRotationMatrix(rotation) * GetTransformMatrix(position);
+			return GetScalingMatrix(scale) * GetRotationMatrix(rotation) * GetTranslateMatrix(position);
 		}
 
-		const Mat44f LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
+		inline const Mat44f LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
 		{
-			// Gram-Schmidt process
 			Vec3f right = Cross(worldUp, at).Normalize();
 			Vec3f up = Cross(at, right).Normalize();
 			Vec3f front = Cross(right, up);
@@ -104,26 +103,28 @@ namespace kepler {
 			return view;
 		}
 
-		const Mat44f Perspective(const float fovY, const float aspect, const float near, const float far)
+		inline const Mat44f Perspective(const float fovY, const float aspect, const float nearClip, const float farClip)
 		{
 			Mat44f perspective{
 			1.0f / (std::tanf(DegToRad(fovY / 2.0f)) * aspect), 0.0f, 0.0f, 0.0f ,
 			0.0f, 1.0f / std::tanf(DegToRad(fovY / 2.0f)), 0.0f, 0.0f ,
-			0.0f, 0.0f, far / (far - near), -1.0f,
-			0.0f, 0.0f, near* far / (far - near), 0.0f
+			0.0f, 0.0f, farClip / (farClip - nearClip), -1.0f,
+			0.0f, 0.0f, nearClip * farClip / (farClip - nearClip), 0.0f
 			};
 
 			return perspective;
 		}
 
-		const Mat44f Orthographic(const float left, const float right, const float top, const float bottom, const float near, const float far)
+		inline const Mat44f Orthographic(const float left, const float right, const float top, const float bottom, const float nearClip, const float farClip)
 		{
 			Mat44f orthographic{
-				2.0f / (right - left), 0.0f, 0.0f, -(right + left) / (right - left),
-				0.0f, 2.0f / (top - bottom), 0.0f, -(top + bottom) / (top - bottom),
-				0.0f, 0.0f, -2.0f / (far - near), -(far + near) / (far - near),
-				0.0f, 0.0f,	0.0f, 1.0f
+				2.0f / (right - left), 0.0f, 0.0f, 0.0f,
+				0.0f, 2.0f / (bottom - top), 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f / (farClip - nearClip), 0.0f,
+				0.0f, 0.0f, -1.0f / (farClip - nearClip) * nearClip, 1.0f
 			};
+
+			return orthographic;
 		}
 	}
 }

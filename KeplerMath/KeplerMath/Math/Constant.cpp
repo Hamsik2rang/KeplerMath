@@ -1,6 +1,5 @@
 #include "Constant.h"
 
-
 namespace kepler {
 	namespace math {
 		namespace constant {
@@ -11,7 +10,7 @@ namespace kepler {
 			const float PIDIV6 = PI / 6;
 
 			const float E = 2.7182818f;
-			const float Epsilon = 1.732e-7f;
+			const float EPSILON = 1.732e-7f;
 		}
 	}
 }
