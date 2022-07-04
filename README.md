@@ -4,5 +4,6 @@ Math library for Kepler Engine
 * Vector
 * Matrix
 * Quaternion
+* Transformation
 * Interpolation(Lerp, Slerp)
 * Curves
