@@ -438,5 +438,5 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,c++
 
 # personal setting
-/bin
-/bin-int
+KeplerMath/bin
+KeplerMath/bin-int
