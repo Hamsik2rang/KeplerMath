@@ -4,11 +4,12 @@
 #include <cmath>
 #include <cassert>
 
+#include "Base.h"
 #include "Constant.h"
 
 namespace kepler {
 
-	struct Vector2
+	struct KEPLER_MATH_API Vector2
 	{
 		union
 		{

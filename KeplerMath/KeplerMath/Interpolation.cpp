@@ -3,7 +3,7 @@
 namespace kepler {
 	namespace math {
 
-		const Vector3 Lerp(const Vector3& v0, const Vector3& v1, float t)
+		const Vector3 KEPLER_MATH_API Lerp(const Vector3& v0, const Vector3& v1, float t)
 		{
 			t = std::clamp(t, 0.0f, 1.0f);
 			
@@ -13,7 +13,7 @@ namespace kepler {
 			return vt;
 		}
 
-		const Vector4 Lerp(const Vector4& v0, const Vector4& v1, float t)
+		const Vector4 KEPLER_MATH_API Lerp(const Vector4& v0, const Vector4& v1, float t)
 		{
 			t = std::clamp(t, 0.0f, 1.0f);
 			
@@ -25,7 +25,7 @@ namespace kepler {
 			return vt;
 		}
 
-		const Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
+		const Quaternion KEPLER_MATH_API Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 		{
 			t = std::clamp(t, 0.0f, 1.0f);
 

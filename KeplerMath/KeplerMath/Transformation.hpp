@@ -45,7 +45,7 @@ namespace kepler {
 			return Ry;
 		}
 
-		inline const Mat44f GetRotationMatrixZ(const float angle)
+		inline const Mat44f KEPLER_MATH_API GetRotationMatrixZ(const float angle)
 		{
 			Mat44f Rz{
 				::cosf(angle),	::sinf(angle),	0.0f, 0.0f,
@@ -57,7 +57,7 @@ namespace kepler {
 			return Rz;
 		}
 
-		inline const Mat44f GetRotationMatrix(const Quaternion& rotation)
+		inline const Mat44f KEPLER_MATH_API GetRotationMatrix(const Quaternion& rotation)
 		{
 			const Quaternion& q = rotation;
 			Mat44f R = {
@@ -70,7 +70,7 @@ namespace kepler {
 			return R;
 		}
 
-		inline const Mat44f GetScalingMatrix(const Vector3& scale)
+		inline const Mat44f KEPLER_MATH_API GetScalingMatrix(const Vector3& scale)
 		{
 			Mat44f scaling{
 				scale.x,	0.0f,		0.0f,		0.0f,
@@ -82,12 +82,12 @@ namespace kepler {
 			return scaling;
 		}
 
-		inline const Mat44f GetWorldMatrix(const Vector3& position, const Quaternion& rotation, const Vector3& scale)
+		inline const Mat44f KEPLER_MATH_API GetWorldMatrix(const Vector3& position, const Quaternion& rotation, const Vector3& scale)
 		{
 			return GetScalingMatrix(scale) * GetRotationMatrix(rotation) * GetTranslateMatrix(position);
 		}
 
-		inline const Mat44f LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
+		inline const Mat44f KEPLER_MATH_API LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
 		{
 			Vec3f right = Cross(worldUp, at).Normalize();
 			Vec3f up = Cross(at, right).Normalize();
@@ -103,7 +103,7 @@ namespace kepler {
 			return view;
 		}
 
-		inline const Mat44f Perspective(const float fovY, const float aspect, const float nearClip, const float farClip)
+		inline const Mat44f KEPLER_MATH_API Perspective(const float fovY, const float aspect, const float nearClip, const float farClip)
 		{
 			Mat44f perspective{
 			1.0f / (std::tanf(DegToRad(fovY / 2.0f)) * aspect), 0.0f, 0.0f, 0.0f ,
@@ -115,9 +115,9 @@ namespace kepler {
 			return perspective;
 		}
 
-		inline const Mat44f Orthographic(const float left, const float right, const float top, const float bottom, const float nearClip, const float farClip)
+		inline const Mat44f KEPLER_MATH_API Orthographic(const float left, const float right, const float top, const float bottom, const float nearClip, const float farClip)
 		{
-			Mat44f orthographic{
+			Mat44f orthographic {
 				2.0f / (right - left), 0.0f, 0.0f, 0.0f,
 				0.0f, 2.0f / (bottom - top), 0.0f, 0.0f,
 				0.0f, 0.0f, 1.0f / (farClip - nearClip), 0.0f,

@@ -118,7 +118,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KEPLER_MATH_BUILD_DLL;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AssemblerOutput>AssemblyCode</AssemblerOutput>
     </ClCompile>
@@ -133,7 +133,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KEPLER_MATH_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AssemblerOutput>AssemblyCode</AssemblerOutput>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -146,31 +146,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Math\Constant.cpp" />
-    <ClCompile Include="Math\Interpolation.cpp" />
-    <ClCompile Include="Math\Matrix33.cpp" />
-    <ClCompile Include="Math\Matrix44.cpp" />
-    <ClCompile Include="Math\Quaternion.cpp" />
-    <ClCompile Include="Math\Vector2.cpp" />
-    <ClCompile Include="Math\Vector3.cpp" />
-    <ClCompile Include="Math\Vector4.cpp" />
+    <ClCompile Include="Constant.cpp" />
+    <ClCompile Include="Interpolation.cpp" />
+    <ClCompile Include="Matrix33.cpp" />
+    <ClCompile Include="Matrix44.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\Constant.h" />
-    <ClInclude Include="Math\Interpolation.h" />
+    <ClInclude Include="Base.h" />
+    <ClInclude Include="Constant.h" />
+    <ClInclude Include="Interpolation.h" />
     <ClInclude Include="Math\Interpolation.hpp" />
-    <ClInclude Include="Math\Intrinsic.h" />
-    <ClInclude Include="Math\KeplerMath.h" />
-    <ClInclude Include="Math\MathUtility.h" />
-    <ClInclude Include="Math\Matrix.h" />
-    <ClInclude Include="Math\Matrix33.hpp" />
-    <ClInclude Include="Math\Matrix44.hpp" />
-    <ClInclude Include="Math\Quaternion.h" />
-    <ClInclude Include="Math\Transformation.hpp" />
-    <ClInclude Include="Math\Vector.h" />
-    <ClInclude Include="Math\Vector2.hpp" />
-    <ClInclude Include="Math\Vector3.hpp" />
-    <ClInclude Include="Math\Vector4.hpp" />
+    <ClInclude Include="Intrinsic.h" />
+    <ClInclude Include="KeplerMath.h" />
+    <ClInclude Include="MathUtility.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Matrix33.hpp" />
+    <ClInclude Include="Matrix44.hpp" />
+    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Transformation.hpp" />
+    <ClInclude Include="Vector.h" />
+    <ClInclude Include="Vector2.hpp" />
+    <ClInclude Include="Vector3.hpp" />
+    <ClInclude Include="Vector4.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,13 +2,13 @@
 
 namespace kepler{
 
-	const Matrix33 Matrix33::Zero = {
+	const Matrix33 KEPLER_MATH_API Matrix33::Zero = {
 		0.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, 0.0f
 	};
 
-	const Matrix33 Matrix33::Identity = {
+	const Matrix33 KEPLER_MATH_API Matrix33::Identity = {
 		1.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 1.0f
