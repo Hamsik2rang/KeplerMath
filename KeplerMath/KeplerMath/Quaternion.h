@@ -50,7 +50,7 @@ namespace kepler {
 
 		// It's implemented on left-handed coordinated.
 		// Angles are measured clockwise when looking along the rotation axis toward the origin.
-		// The order of transformation is pitch firat, then yaw, then roll.
+		// The order of transformation is pitch first, then yaw, then roll.
 		static const Quaternion FromEuler(const Vector3& v)
 		{
 			
