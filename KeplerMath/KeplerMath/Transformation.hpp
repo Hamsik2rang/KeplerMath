@@ -98,9 +98,9 @@ namespace kepler {
 			float tu = Dot(-eye, up);
 			float tf = Dot(-eye, front);
 
-			Mat44f view {
-				right.x,	up.x,	front.z,	0.0f,
-				right.y,	up.y,	front.z,	0.0f,
+			Mat44f view{
+				right.x,	up.x,	front.x,	0.0f,
+				right.y,	up.y,	front.y,	0.0f,
 				right.z,	up.z,	front.z,	0.0f,
 				tr,			tu,		tf,			1.0f
 			};
