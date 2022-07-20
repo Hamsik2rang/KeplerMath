@@ -51,7 +51,7 @@ namespace kepler {
 		// It's implemented on left-handed coordinated.
 		// Angles are measured clockwise when looking along the rotation axis toward the origin.
 		// The order of transformation is pitch first, then yaw, then roll.
-		static const Quaternion FromEuler(const Vector3& v)
+		inline static const Quaternion FromEuler(const Vector3& v)
 		{
 			
 			Vector3 angle = v * 0.5f;
@@ -74,7 +74,7 @@ namespace kepler {
 			return q;
 		}
 
-		static const Quaternion FromAxisAngle(const Vector3& axis, const float angle)
+		inline static const Quaternion FromAxisAngle(const Vector3& axis, const float angle)
 		{
 			Quaternion q = Quaternion::Identity;
 			float halfRadian = math::DegToRad(angle) / 2.0f;
@@ -88,9 +88,11 @@ namespace kepler {
 		//--------------------------------------------------------
 
 		// Member Functions --------------------------------------
-		const float Length() const { return ::sqrtf(v.SqLength() + w * w); }
-		const float SqLength() const { return v.SqLength() + w * w; }
-		const Vector3 ToEuler() const 
+		inline const float Length() const { return ::sqrtf(v.SqLength() + w * w); }
+		inline const float SqLength() const { return v.SqLength() + w * w; }
+		inline const Quaternion Conjugate() const { return Quaternion{ -v, w }; }
+		inline const Quaternion Inverse() const { return Conjugate() / SqLength(); }
+		inline const Vector3 ToEuler() const 
 		{
 			Vector3 angle = Vec3f::Zero;
 			// pitch(x-axis)
@@ -121,29 +123,31 @@ namespace kepler {
 		//--------------------------------------------------------
 
 		// Operator Overloadings ---------------------------------
-		Quaternion& operator=(const Quaternion& rhs) { v = rhs.v; w = rhs.w; return *this; }
-		const Quaternion operator+() const { return *this; }
-		const Quaternion operator-() const { return Quaternion{ -v }; }
+		inline Quaternion& operator=(const Quaternion& rhs) { v = rhs.v; w = rhs.w; return *this; }
+		inline const Quaternion operator+() const { return *this; }
+		inline const Quaternion operator-() const { return Quaternion{ -v, -w }; }
 
-		const Quaternion operator+(const Quaternion& rhs) const { Quaternion result{ v + rhs.v, w + rhs.w }; return result; }
-		const Quaternion operator-(const Quaternion& rhs) const { Quaternion result{ v - rhs.v, w + rhs.w }; return result; }
-		const Quaternion operator*(const float rhs) const { Quaternion result{ v * rhs, w * rhs }; return result; }
-		const Quaternion operator/(const float rhs) const { Quaternion result{ v / rhs, w / rhs }; return result; }
+		inline const Quaternion operator+(const Quaternion& rhs) const { Quaternion result{ v + rhs.v, w + rhs.w }; return result; }
+		inline const Quaternion operator-(const Quaternion& rhs) const { Quaternion result{ v - rhs.v, w + rhs.w }; return result; }
+		inline const Quaternion operator*(const float rhs) const { Quaternion result{ v * rhs, w * rhs }; return result; }
+		inline const Quaternion operator/(const float rhs) const { Quaternion result{ v / rhs, w / rhs }; return result; }
 
-		const Quaternion operator*(const Quaternion& rhs) const { Quaternion result{ w * rhs.v + rhs.w * v + Cross(v, rhs.v), w * rhs.w - Dot(v, rhs.v) }; return result; }
+		inline const Quaternion operator*(const Quaternion& rhs) const { Quaternion result{ w * rhs.v + rhs.w * v + Cross(v, rhs.v), w * rhs.w - Dot(v, rhs.v) }; return result; }
 		
-		Quaternion& operator+=(const Quaternion& rhs) { v += rhs.v; w += rhs.w; return *this; }
-		Quaternion& operator-=(const Quaternion& rhs) { v -= rhs.v; w -= rhs.w; return *this; }
-		Quaternion& operator*=(const float rhs) { v *= rhs; w *= rhs; return *this; }
+		inline Quaternion& operator+=(const Quaternion& rhs) { v += rhs.v; w += rhs.w; return *this; }
+		inline Quaternion& operator-=(const Quaternion& rhs) { v -= rhs.v; w -= rhs.w; return *this; }
+		inline Quaternion& operator*=(const float rhs) { v *= rhs; w *= rhs; return *this; }
 
-		Quaternion& operator*=(const Quaternion& rhs) { float tempW = w; w = tempW * rhs.w - Dot(v, rhs.v); v = tempW * rhs.v + rhs.w * v + Cross(v, rhs.v); return *this; }
+		inline Quaternion& operator*=(const Quaternion& rhs) { float tempW = w; w = tempW * rhs.w - Dot(v, rhs.v); v = tempW * rhs.v + rhs.w * v + Cross(v, rhs.v); return *this; }
 		//--------------------------------------------------------
 
 		// Friend Operator Overloadings --------------------------
-		friend const Quaternion operator*(const float lhs, const Quaternion& rhs) { return rhs * lhs; }
-		friend const bool operator==(const Quaternion& lhs, const Quaternion& rhs) { return lhs.w == rhs.w && lhs.v == rhs.v; }
-		friend const bool operator!=(const Quaternion& lhs, const Quaternion& rhs) { return !(lhs == rhs); }
+		inline friend const Quaternion operator*(const float lhs, const Quaternion& rhs) { return rhs * lhs; }
+		inline friend const bool operator==(const Quaternion& lhs, const Quaternion& rhs) { return lhs.w == rhs.w && lhs.v == rhs.v; }
+		inline friend const bool operator!=(const Quaternion& lhs, const Quaternion& rhs) { return !(lhs == rhs); }
 
 		//--------------------------------------------------------
 	};
+
+	using Quat = Quaternion;
 }
